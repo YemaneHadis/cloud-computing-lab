@@ -8,11 +8,11 @@
   }
   
   .app-container {
-    width: 1000px;
+    width: 1000px; 
     max-width: 100%;
     padding: 0 20px;
     text-align: center;
-  }
+  } 
   
   .spotlight__wrapper {
     border-radius: 12px;
