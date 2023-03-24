@@ -1,0 +1,29 @@
+name: Deploy Website
+
+on: 
+  #Triggers the workflow on push or pull request
+  push: 
+    branches: [ main ]
+  # Allow you to run this work flow manually
+  workflow_dispatch:
+jobs:
+  # this workflow contains a single job called "build"
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: us-east-1
+      - name: Install Module
+        run: npm ci
+      - name: Build application
+        run: npm run build
+      - name: Deploy to S3
+        run: aws s3 sync ./build/ s3://${{ secrets.BUCKET_ID }}
+      - name: Create CloudFront Invalidation
+        run: aws cloudfront create-invalidation --distribution-id ${{secrets.DISTRIBUTION_ID}} --paths "/*
