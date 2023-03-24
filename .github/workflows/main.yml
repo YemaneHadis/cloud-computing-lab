@@ -20,7 +20,7 @@ jobs:
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           aws-region: us-east-1
       - name: Install Module
-        run: npm ci
+        run: npm install --legacy-peer-deps
       - name: Build application
         run: npm run build
       - name: Deploy to S3
